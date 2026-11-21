@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>قضای نماز | یا علی</title>
+<meta name="theme-color" content="#233A1E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="قضای نماز">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Aref+Ruqaa:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F1DC; --shell:#EADFBE;
+  --p50:#F4F8E6; --p100:#E7F0C8; --p200:#D3E5A5; --p300:#BBD67F; --p400:#9DC45F; --p500:#7FA84A; --p600:#628A38; --p700:#476B2B; --p800:#34521F; --p900:#233A1E;
+  --rose:#B4637A; --rose-d:#8E4660; --rose-soft:#F6E1E7; --gold:#C2A04E; --gold-l:#E3C877; --amber:#D99A2B; --amber-soft:#FBEFD3;
+  --ink:#1F2E1A; --muted:#6B7A5C;
+  --ft:'Vazirmatn',system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;
+  --fc:'Aref Ruqaa','Amiri',serif; --fq:'Amiri','Scheherazade New',serif;
+  --safe-b:env(safe-area-inset-bottom,0px); --safe-t:env(safe-area-inset-top,0px);
+  --ease:cubic-bezier(.22,.8,.3,1);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+html,body{margin:0}
+body{
+  font-family:var(--ft); color:var(--ink); line-height:1.75; font-weight:500;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overscroll-behavior-y:none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='rgba(98,138,56,0.11)' stroke-width='1.2'%3E%3Crect x='16' y='16' width='32' height='32'/%3E%3Crect x='16' y='16' width='32' height='32' transform='rotate(45 32 32)'/%3E%3Ccircle cx='32' cy='32' r='5'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(180deg,#F4F8E6 0%,#ECF2D2 55%,#E3EAC2 100%);
+  background-attachment:fixed; min-height:100vh;
+}
+.app{max-width:520px;margin:0 auto;padding:0 14px calc(104px + var(--safe-b))}
+button{font-family:inherit;cursor:pointer;border:0;touch-action:manipulation;transition:transform .15s var(--ease),background .2s,box-shadow .2s,opacity .2s}
+button:active:not(:disabled){transform:scale(.96)}
+a{touch-action:manipulation}
+.num{font-variant-numeric:tabular-nums}
+#view{min-height:40vh}
+#view.enter>*{animation:rise .38s var(--ease) both}
+#view.enter>*:nth-child(2){animation-delay:.04s}#view.enter>*:nth-child(3){animation-delay:.08s}#view.enter>*:nth-child(4){animation-delay:.12s}#view.enter>*:nth-child(5){animation-delay:.16s}#view.enter>*:nth-child(n+6){animation-delay:.2s}
+
+/* ---------- Mini top bar ---------- */
+.mini-bar{position:fixed;top:0;inset-inline:0;z-index:30;padding:calc(8px + var(--safe-t)) 18px 8px;display:flex;align-items:center;justify-content:space-between;background:rgba(35,58,30,.94);backdrop-filter:blur(10px);color:#fff;transform:translateY(-110%);transition:transform .35s var(--ease);border-bottom:2px solid var(--gold);font-weight:700}
+.mini-bar.show{transform:none}
+.mini-bar .t{font-family:var(--fc);font-size:20px;color:var(--gold-l)}
+.mini-bar .b{font-size:12.5px;background:var(--rose);border-radius:99px;padding:2px 12px;display:none}
+.mini-bar .b.on{display:inline-block}
+
+/* ---------- Hero ---------- */
+.hero{
+  position:relative; margin:0 -14px; padding:calc(16px + var(--safe-t)) 18px 20px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='rgba(227,200,119,0.13)' stroke-width='1'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(120% 90% at 78% 12%,rgba(227,200,119,.22),transparent 55%),
+    linear-gradient(160deg,var(--p900) 0%,var(--p800) 55%,var(--p700) 100%);
+  color:#fff; border-radius:0 0 38px 38px; overflow:hidden;
+  box-shadow:0 18px 34px -16px rgba(35,58,30,.6);
+}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:3px;background:linear-gradient(90deg,transparent,var(--gold-l),transparent)}
+.hero-row{display:flex;align-items:center;gap:10px}
+.zulf{flex:0 0 172px;width:172px;margin-inline-start:-6px;height:auto;filter:drop-shadow(0 10px 18px rgba(0,0,0,.45))}
+.zulf .halo{transform-origin:100px 160px;animation:spin 90s linear infinite}
+.hero-txt{flex:1;min-width:0;text-align:center}
+.bism{font-family:var(--fq);font-size:16px;color:var(--gold-l);opacity:.95}
+.hero h1{margin:0;font-family:var(--fc);font-size:40px;font-weight:700;line-height:1.35;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.ali{font-family:var(--fc);font-size:25px;color:var(--gold-l);line-height:1.5}
+.motto{font-family:var(--fq);font-size:13px;color:#EFE3B6;opacity:.85;margin-top:2px}
+.hdate{font-size:13px;opacity:.88;margin-top:6px;font-weight:500}
+.verse{
+  margin-top:14px;padding:10px 12px;text-align:center;border-radius:18px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(227,200,119,.3);
+  font-family:var(--fq);font-size:18px;color:#F6EBC3;line-height:2
+}
+.verse small{display:block;font-family:var(--ft);font-size:11px;opacity:.7;margin-top:0}
+
+/* ---------- Cards ---------- */
+.card{background:rgba(255,255,255,.8);backdrop-filter:blur(6px);border:1px solid rgba(98,138,56,.18);border-radius:24px;padding:15px;margin-top:14px;box-shadow:0 10px 24px -16px rgba(35,58,30,.5)}
+.card h2{margin:0 0 8px;font-size:16.5px;font-weight:700;color:var(--p800);display:flex;align-items:center;gap:8px}
+.sec-title{margin:24px 4px 0;font-size:14.5px;font-weight:700;color:var(--p700);display:flex;align-items:center;gap:8px}
+.sec-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--p300),transparent)}
+.muted{color:var(--muted);font-size:13px;font-weight:500}
+
+.alert{display:flex;gap:10px;align-items:flex-start;margin-top:14px;padding:12px 14px;border-radius:20px;font-size:14px;font-weight:500}
+.alert.warn{background:var(--rose-soft);border:1px solid #E8B9C6;color:var(--rose-d)}
+.alert.amber{background:var(--amber-soft);border:1px solid #EBD197;color:#8A5B0C}
+.alert.good{background:var(--p100);border:1px solid var(--p300);color:var(--p800)}
+.alert b{font-weight:800}
+.alert .ic{font-size:20px;line-height:1.3}
+.alert button{margin-right:auto;background:rgba(255,255,255,.75);color:inherit;border-radius:12px;padding:6px 12px;font-size:12.5px;font-weight:700;white-space:nowrap}
+
+/* ---------- Day nav ---------- */
+.daynav{display:flex;align-items:center;justify-content:space-between;margin-top:16px;gap:8px}
+.daynav .mid{text-align:center;flex:1}
+.daynav .mid b{display:block;font-size:17px;color:var(--p800);font-weight:800}
+.daynav .mid span{font-size:12.5px;color:var(--muted)}
+.circ{width:42px;height:42px;border-radius:50%;background:#fff;border:1px solid var(--p300);color:var(--p700);font-size:20px;display:grid;place-items:center;box-shadow:0 6px 12px -8px rgba(0,0,0,.35)}
+.circ:disabled{opacity:.35}
+.todaychip{display:inline-block;margin-top:2px;padding:1px 10px;border-radius:99px;background:var(--p200);color:var(--p800);font-size:11.5px;font-weight:700}
+
+/* ---------- Prayer card ---------- */
+.prayer{position:relative;margin-top:12px;border-radius:26px;padding:14px;background:#fff;border:1.5px solid var(--p200);box-shadow:0 12px 24px -18px rgba(35,58,30,.65);transition:border-color .3s,background .3s}
+.prayer.read{border-color:var(--p500);background:linear-gradient(180deg,#fff,var(--p50))}
+.prayer.missed{border-color:var(--rose);background:linear-gradient(180deg,#fff,var(--rose-soft))}
+.prayer.late{border-color:var(--amber)}
+.prayer.pop{animation:pop .45s var(--ease)}
+.ptop{display:flex;align-items:center;gap:12px}
+.picon{flex:0 0 54px;width:54px;height:54px;border-radius:19px;display:grid;place-items:center;background:linear-gradient(145deg,var(--p100),var(--p200));color:var(--p700);transition:.3s}
+.prayer.read .picon{background:linear-gradient(145deg,var(--p400),var(--p600));color:#fff}
+.prayer.missed .picon{background:linear-gradient(145deg,#D58A9E,var(--rose));color:#fff}
+.picon svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pname{font-size:18px;font-weight:800;color:var(--p900)}
+.pname small{font-family:var(--fq);font-weight:400;font-size:16px;color:var(--gold);margin-right:6px}
+.pmeta{font-size:12.5px;color:var(--muted)}
+.tag{margin-right:auto;font-size:11.5px;font-weight:700;border-radius:99px;padding:3px 10px;white-space:nowrap}
+.tag.t-read{background:var(--p200);color:var(--p800)}
+.tag.t-missed{background:#F0C7D2;color:var(--rose-d)}
+.tag.t-late{background:var(--amber-soft);color:#8A5B0C}
+.tag.t-wait{background:#EFF1E6;color:var(--muted)}
+.pbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.btn-read,.btn-miss{padding:12px 8px;border-radius:17px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-read{background:var(--p100);color:var(--p800);border:1.5px solid var(--p300)}
+.btn-miss{background:var(--rose-soft);color:var(--rose-d);border:1.5px solid #E8B9C6}
+.prayer.read .btn-read{background:linear-gradient(145deg,var(--p500),var(--p700));color:#fff;border-color:var(--p700);box-shadow:0 10px 18px -10px var(--p700)}
+.prayer.missed .btn-miss{background:linear-gradient(145deg,#C9768C,var(--rose-d));color:#fff;border-color:var(--rose-d);box-shadow:0 10px 18px -10px var(--rose-d)}
+.progress{height:10px;border-radius:99px;background:var(--p100);overflow:hidden;margin-top:8px}
+.progress i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--p400),var(--p600));transition:width .6s var(--ease)}
+.streak{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--p700)}
+
+/* ---------- Dhikr ---------- */
+.dhikr{background:linear-gradient(160deg,#FFFDF3,#F7F1DC);border:1px solid #E6D9A8;text-align:center}
+.dh-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)}
+.dh-head b{font-size:15px;color:var(--p800);font-weight:800}
+.dh-ar{font-family:var(--fq);font-size:25px;line-height:1.9;color:var(--p900);margin-top:6px;font-weight:700}
+.dh-fa{font-size:13px;color:var(--muted);margin-top:-2px}
+.dh-row{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:10px}
+.tasbih{position:relative;width:124px;height:124px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--p100));box-shadow:0 14px 26px -14px var(--p700),inset 0 0 0 1px var(--p200);display:grid;place-items:center;user-select:none;-webkit-user-select:none}
+.tasbih svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.tasbih .in{position:relative;text-align:center;line-height:1.15}
+.tasbih .in b{font-size:34px;color:var(--p800);font-weight:800;display:block}
+.tasbih .in span{font-size:11.5px;color:var(--muted)}
+.tasbih.tick{animation:tick .18s var(--ease)}
+
+/* ---------- Calendar ---------- */
+.calhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:16px}
+.calhead .mid{text-align:center;flex:1}
+.calhead .mid b{display:block;font-size:22px;color:var(--p800);font-weight:800;line-height:1.3}
+.calhead .mid span{font-size:12.5px;color:var(--muted)}
+.cal{margin-top:12px;padding:14px 10px 12px}
+.cal-w,.cal-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.cal-w div{text-align:center;font-size:12.5px;font-weight:700;color:var(--p600);padding-bottom:6px}
+.cal-w div.fri{color:var(--rose)}
+.cd{position:relative;padding:0;min-width:0;aspect-ratio:1/1.18;border-radius:15px;background:#fff;border:1.5px solid var(--p100);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:15.5px;font-weight:700;color:var(--p900);transition:transform .15s var(--ease),background .25s,border-color .25s}
+.cd:active{transform:scale(.93)}
+.cd.empty{background:transparent;border:0;pointer-events:none}
+.cd.fri{color:var(--rose-d)}
+.cd.full{background:linear-gradient(160deg,var(--p300),var(--p500));border-color:var(--p600);color:#fff}
+.cd.part{background:var(--p100);border-color:var(--p300)}
+.cd.miss{background:var(--rose-soft);border-color:#E8B9C6}
+.cd.future{opacity:.42;pointer-events:none}
+.cd.today{box-shadow:0 0 0 2.5px var(--gold)}
+.cd.sel{border-color:var(--p800);box-shadow:0 0 0 2px var(--p800)}
+.cd.today.sel{box-shadow:0 0 0 2.5px var(--gold),0 0 0 4.5px var(--p800)}
+.dots{display:flex;gap:2px}
+.dots i{width:4.5px;height:4.5px;border-radius:50%;background:#D9DFC8}
+.dots i.r{background:var(--p600)}.dots i.m{background:var(--rose)}
+.cd.full .dots i.r{background:#fff}
+.legend{display:flex;justify-content:center;gap:14px;margin-top:10px;font-size:11.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.stat{background:#fff;border:1px solid var(--p200);border-radius:18px;padding:10px 6px;text-align:center}
+.stat b{display:block;font-size:22px;font-weight:800;color:var(--p800);line-height:1.2}
+.stat span{font-size:11.5px;color:var(--muted)}
+.stat.r b{color:var(--rose-d)}
+.dayrow{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--p200);font-size:14px}
+.dayrow:last-of-type{border:0}
+
+/* ---------- Qaza ---------- */
+.ringcard{display:flex;align-items:center;gap:16px}
+.ring{position:relative;flex:0 0 120px;width:120px;height:120px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle.pg{transition:stroke-dashoffset .8s var(--ease)}
+.ring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .c b{font-size:30px;color:var(--p900);line-height:1.1;font-weight:800}
+.ring .c span{font-size:11.5px;color:var(--muted)}
+.ringinfo{flex:1}
+.ringinfo .row{display:flex;justify-content:space-between;font-size:13.5px;padding:3px 0;border-bottom:1px dashed var(--p200)}
+.ringinfo .row:last-child{border:0}
+.btn-main{display:block;width:100%;margin-top:12px;padding:14px;border-radius:18px;font-size:15px;font-weight:700;color:#fff;background:linear-gradient(145deg,var(--p500),var(--p700));box-shadow:0 12px 22px -12px var(--p700)}
+.btn-ghost{display:block;width:100%;margin-top:10px;padding:12px;border-radius:17px;font-size:14px;font-weight:700;color:var(--p700);background:#fff;border:1.5px solid var(--p300)}
+.btn-danger{background:var(--rose-soft);color:var(--rose-d);border:1.5px solid #E8B9C6}
+.qrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--p100)}
+.qrow:last-child{border:0}
+.qrow .qn{flex:1;font-weight:700;color:var(--p900)}
+.qrow .qn small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.cnt{min-width:56px;text-align:center;font-size:18px;font-weight:800;color:var(--p800);background:var(--p50);border:1px solid var(--p200);border-radius:12px;padding:3px 8px}
+.mini{width:36px;height:36px;border-radius:12px;background:#fff;border:1px solid var(--p300);color:var(--p700);font-size:18px;font-weight:700}
+.done-btn{padding:9px 14px;border-radius:13px;background:linear-gradient(145deg,var(--p500),var(--p700));color:#fff;font-weight:700;font-size:13.5px}
+.done-btn:disabled{background:#DDE3CC;color:#9AA588}
+.old{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--rose-soft);color:var(--rose-d);margin-right:6px}
+
+/* ---------- Chat ---------- */
+.chat{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.bub{max-width:92%;padding:10px 14px;border-radius:20px;font-size:14.5px;line-height:1.95;word-wrap:break-word;animation:rise .3s var(--ease)}
+.bub.u{align-self:flex-start;background:linear-gradient(145deg,var(--p500),var(--p700));color:#fff;border-bottom-right-radius:6px}
+.bub.a{align-self:flex-end;background:#fff;border:1px solid var(--p200);border-bottom-left-radius:6px;box-shadow:0 8px 16px -12px rgba(0,0,0,.4)}
+.bub.a p{margin:0 0 8px}.bub.a p:last-child{margin:0}
+.bub.a ul{margin:4px 0 8px;padding:0 18px 0 0}
+.bub.thinking{color:var(--muted);font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{background:#fff;border:1px solid var(--p300);color:var(--p800);border-radius:99px;padding:8px 13px;font-size:13px;font-weight:600}
+.askbar{display:flex;gap:8px;align-items:flex-end;margin-top:14px;background:#fff;border:1.5px solid var(--p300);border-radius:24px;padding:6px 6px 6px 8px}
+.askbar textarea{flex:1;border:0;outline:0;resize:none;font-family:inherit;font-size:14.5px;padding:8px 10px;max-height:120px;background:transparent;color:var(--ink)}
+.send{width:44px;height:44px;border-radius:17px;background:linear-gradient(145deg,var(--p500),var(--p700));color:#fff;display:grid;place-items:center}
+.send:disabled{opacity:.5}
+.send svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transform:scaleX(-1)}
+.disc{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
+details.faq{background:#fff;border:1px solid var(--p200);border-radius:19px;margin-top:10px;overflow:hidden}
+details.faq summary{padding:13px 14px;font-weight:700;color:var(--p800);cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:8px;font-size:14.5px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary::after{content:"＋";color:var(--p500)}
+details.faq[open] summary::after{content:"－"}
+details.faq .ans{padding:0 14px 13px;font-size:14px;color:#33422B;animation:fade .25s}
+
+/* ---------- Settings ---------- */
+.field{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--p100)}
+.field:last-child{border:0}
+.field label{font-weight:600;font-size:14.5px}
+input[type=time],input[type=number],select,textarea.box{font-family:inherit;font-size:14.5px;border:1.5px solid var(--p300);border-radius:12px;padding:7px 10px;background:#fff;color:var(--ink);outline:0}
+input[type=time]:focus,input[type=number]:focus,select:focus{border-color:var(--p600)}
+input[type=number]{width:90px;text-align:center}
+textarea.box{width:100%;min-height:90px;margin-top:8px;direction:ltr;font-size:12px}
+.switch{position:relative;width:52px;height:30px;border-radius:99px;background:#CBD3B8;transition:.25s;flex:0 0 52px}
+.switch::after{content:"";position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.25s var(--ease);box-shadow:0 2px 5px rgba(0,0,0,.3)}
+.switch.on{background:var(--p500)}
+.switch.on::after{right:25px}
+ol.steps{margin:8px 0 0;padding:0 20px 0 0;font-size:13.5px;color:#33422B}
+
+/* ---------- Nav ---------- */
+.nav{position:fixed;inset:auto 0 0 0;z-index:20;padding:8px 10px calc(8px + var(--safe-b));display:flex;justify-content:center;pointer-events:none}
+.nav-in{pointer-events:auto;width:100%;max-width:500px;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:6px;background:rgba(35,58,30,.94);backdrop-filter:blur(12px);border-radius:28px;box-shadow:0 16px 32px -12px rgba(0,0,0,.6);border:1px solid rgba(227,200,119,.32)}
+.nav button{background:transparent;color:#C9D8AE;padding:8px 2px 6px;border-radius:21px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;position:relative}
+.nav button svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--ease)}
+.nav button.on{background:linear-gradient(145deg,var(--p400),var(--p600));color:#fff}
+.nav button.on svg{transform:translateY(-1px) scale(1.12)}
+.nav .badge{position:absolute;top:1px;left:50%;margin-left:5px;min-width:18px;height:18px;border-radius:99px;background:var(--rose);color:#fff;font-size:10.5px;font-weight:800;display:grid;place-items:center;padding:0 4px;border:2px solid var(--p900)}
+
+/* ---------- Dialog / toast / sheet ---------- */
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(20,32,16,.55);backdrop-filter:blur(3px);display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+.scrim.center{align-items:center;padding:20px}
+.scrim.out{opacity:0;transition:opacity .2s}
+.dlg{width:100%;max-width:440px;background:var(--cream);border-radius:30px;padding:22px 20px 18px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);border:1px solid var(--gold);animation:pop .35s var(--ease)}
+.sheet{width:100%;max-width:520px;max-height:90vh;overflow:auto;background:var(--cream);border-radius:30px 30px 0 0;padding:18px 18px calc(22px + var(--safe-b));animation:sheet .35s var(--ease);border-top:2px solid var(--gold)}
+.dlg h3,.sheet h3{margin:0 0 6px;font-size:19px;color:var(--p900);display:flex;align-items:center;gap:8px;font-weight:800}
+.dlg p{margin:6px 0 4px;font-size:14.5px;color:#3A4A31}
+.dlg .btns{display:flex;gap:10px;margin-top:16px}
+.dlg .btns button{flex:1;padding:13px;border-radius:17px;font-weight:700;font-size:14.5px}
+.b-pri{background:linear-gradient(145deg,var(--p500),var(--p700));color:#fff}
+.b-sec{background:#fff;color:var(--p700);border:1.5px solid var(--p300)!important}
+.b-warn{background:linear-gradient(145deg,#C9768C,var(--rose-d));color:#fff}
+.toast{position:fixed;left:50%;bottom:calc(98px + var(--safe-b));transform:translateX(-50%);z-index:60;max-width:92%;background:var(--p900);color:#fff;padding:11px 18px;border-radius:99px;font-size:14px;font-weight:600;box-shadow:0 14px 28px -10px rgba(0,0,0,.6);border:1px solid var(--gold);animation:toast .35s var(--ease);text-align:center}
+.grid5{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.cb{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--p300);border-radius:12px;padding:6px 10px;font-size:13.5px;font-weight:600}
+.cb input{accent-color:var(--p600)}
+.preview{margin-top:12px;background:var(--p100);border:1px solid var(--p300);border-radius:18px;padding:12px;font-size:14px}
+.preview b{color:var(--p800)}
+.footer{text-align:center;margin-top:28px;color:var(--muted);font-size:12px}
+.footer .ali{font-size:24px;color:var(--p600)}
+
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes rise{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+@keyframes sheet{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@keyframes pop{0%{transform:scale(.94)}55%{transform:scale(1.025)}100%{transform:scale(1)}}
+@keyframes tick{0%{transform:scale(1)}50%{transform:scale(.94)}100%{transform:scale(1)}}
+@keyframes toast{from{transform:translate(-50%,16px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
+@media (max-width:360px){.zulf{flex-basis:132px;width:132px}.hero h1{font-size:34px}}
+</style>
+</head>
+<body>
+<div class="mini-bar" id="minibar"><span class="t">قضای نماز · یا علی</span><span class="b" id="mbadge"></span></div>
+<div class="app">
+  <header class="hero" id="hero">
+    <div class="hero-row">
+      <svg class="zulf" viewBox="-30 -8 260 340" aria-label="ذوالفقار امیرالمؤمنین علی علیه‌السلام" role="img">
+        <defs>
+          <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#E3C877" stop-opacity=".45"/><stop offset="1" stop-color="#E3C877" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="100" cy="160" r="150" fill="url(#glow)"/>
+        <g class="halo" fill="none" stroke="#E3C877" stroke-opacity=".55" stroke-width="1.4">
+          <circle cx="100" cy="160" r="112" stroke-opacity=".7" stroke-width="2"/>
+          <circle cx="100" cy="160" r="104" stroke-dasharray="2 6"/>
+          <rect x="31" y="91" width="138" height="138"/>
+          <rect x="31" y="91" width="138" height="138" transform="rotate(45 100 160)"/>
+        </g>
+        <defs>
+  <linearGradient id="zs" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#AFC0B4"/><stop offset=".45" stop-color="#F4F8F0"/><stop offset=".55" stop-color="#FFFFFF"/><stop offset="1" stop-color="#8FA394"/>
+  </linearGradient>
+  <linearGradient id="zg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#F6E3A1"/><stop offset=".5" stop-color="#D2AE55"/><stop offset="1" stop-color="#8F6D25"/>
+  </linearGradient>
+</defs>
+<g id="zhalf">
+  <path d="M100 262 L106.500 262 L108 152 C109.500 124 123 110 125 84 C126.500 62 124 36 116 6 C112 25 106 41 100 56 Z" fill="url(#zs)" stroke="#E7EFE0" stroke-width=".8" stroke-linejoin="round"/>
+  <path d="M104.200 252 L105.300 154 C106.800 130 118 116 120 90 C121 74 120 56 116 34" fill="none" stroke="#9DB0A2" stroke-width="1" stroke-linecap="round"/>
+</g>
+<use href="#zhalf" transform="translate(200 0) scale(-1 1)"/>
+<path d="M100 64 L100 258" stroke="#8EA396" stroke-width="1.600" stroke-linecap="round"/>
+<path d="M100 56 L103.500 66 L100 76 L96.500 66 Z" fill="url(#zg)"/>
+<path d="M100 96 L102.600 103 L100 110 L97.400 103 Z" fill="url(#zg)" opacity=".9"/>
+<path d="M100 130 L102.200 136 L100 142 L97.800 136 Z" fill="url(#zg)" opacity=".8"/>
+<rect x="93.500" y="260" width="13" height="9" rx="2.500" fill="url(#zg)"/>
+<path d="M52 267 Q52 258 65 260 Q78 262 89 270 L111 270 Q122 262 135 260 Q148 258 148 267 Q148 276 135 274 Q124 272 113 280 L87 280 Q76 272 65 274 Q52 276 52 267 Z" fill="url(#zg)" stroke="#6F5318" stroke-width=".7"/>
+<circle cx="52" cy="267" r="4.500" fill="url(#zg)" stroke="#6F5318" stroke-width=".6"/><circle cx="148" cy="267" r="4.500" fill="url(#zg)" stroke="#6F5318" stroke-width=".6"/>
+<circle cx="100" cy="275" r="3.200" fill="#7C1F3D"/><circle cx="100" cy="275" r="1.300" fill="#F6E3A1"/>
+<rect x="95" y="280" width="10" height="26" rx="3" fill="url(#zg)" stroke="#6F5318" stroke-width=".6"/>
+<path d="M95 286 H105 M95 292 H105 M95 298 H105" stroke="#6F5318" stroke-width="1.100"/>
+<circle cx="100" cy="311" r="7.500" fill="url(#zg)" stroke="#6F5318" stroke-width=".6"/><circle cx="100" cy="311" r="2.800" fill="#7C1F3D"/>
+
+      </svg>
+      <div class="hero-txt">
+        <div class="bism">بسم الله الرحمن الرحیم</div>
+        <h1>قضای نماز</h1>
+        <div class="ali">علیٌّ وَلیُّ الله</div>
+        <div class="motto">لا فتی إلا علی، لا سیف إلا ذوالفقار</div>
+        <div class="hdate" id="hdate"></div>
+      </div>
+    </div>
+    <div class="verse">إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَوْقُوتًا<small>سوره نساء، آیه ۱۰۳</small></div>
+  </header>
+
+  <main id="view"></main>
+</div>
+
+<nav class="nav"><div class="nav-in" id="nav"></div></nav>
+<div id="layer"></div>
+
+<script>
+(function(){
+'use strict';
+const PWA=true;
+/* ================= Data ================= */
+const ICONS={
+  fajr:'<svg viewBox="0 0 48 48"><path d="M6 34h36"/><path d="M14 34a10 10 0 0 1 20 0"/><path d="M24 14v5M11 21l3 3M37 21l-3 3M4 28h4M40 28h4"/></svg>',
+  dhuhr:'<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="8"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6M11 11l4 4M33 33l4 4M37 11l-4 4M15 33l-4 4"/></svg>',
+  asr:'<svg viewBox="0 0 48 48"><circle cx="30" cy="18" r="7"/><path d="M30 4v3M43 18h-3M39 9l-2 2M21 9l2 2M6 40h36M10 40l14-12"/></svg>',
+  maghrib:'<svg viewBox="0 0 48 48"><path d="M12 32a12 12 0 0 1 24 0"/><path d="M4 32h40M10 38h28M16 44h16M24 12v4M10 20l3 3M38 20l-3 3"/></svg>',
+  isha:'<svg viewBox="0 0 48 48"><path d="M32 8a16 16 0 1 0 9 28A13 13 0 0 1 32 8z"/><path d="M38 12l1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg>'
+};
+const PR=[
+  {id:'fajr',n:'صبح',ar:'الفجر',r:2,t:'05:00'},
+  {id:'dhuhr',n:'ظهر',ar:'الظهر',r:4,t:'12:30'},
+  {id:'asr',n:'عصر',ar:'العصر',r:4,t:'16:00'},
+  {id:'maghrib',n:'مغرب',ar:'المغرب',r:3,t:'18:00'},
+  {id:'isha',n:'عشا',ar:'العشاء',r:4,t:'19:30'}
+];
+const PM=Object.fromEntries(PR.map(p=>[p.id,p]));
+// ذکر معروف هر روز هفته؛ ایندکس = Date.getDay() (۰ = یکشنبه)
+const WD=['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
+const WSHORT=['ش','ی','د','س','چ','پ','ج'];
+const DHIKR=[
+  {ar:'يَا ذَا الْجَلَالِ وَالْإِكْرَام',fa:'ای صاحب شکوه و بزرگواری',n:100},
+  {ar:'يَا قَاضِيَ الْحَاجَات',fa:'ای برآورنده‌ی حاجت‌ها',n:100},
+  {ar:'يَا أَرْحَمَ الرَّاحِمِين',fa:'ای مهربان‌ترین مهربانان',n:100},
+  {ar:'يَا حَيُّ يَا قَيُّوم',fa:'ای زنده‌ی پاینده',n:100},
+  {ar:'لَا إِلٰهَ إِلَّا اللهُ الْمَلِكُ الْحَقُّ الْمُبِين',fa:'خدایی جز الله نیست؛ پادشاهِ حقِ آشکار',n:100},
+  {ar:'اللّٰهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَآلِ مُحَمَّدٍ وَعَجِّلْ فَرَجَهُمْ',fa:'خدایا بر محمد و آلِ محمد درود فرست و در فرجشان تعجیل کن',n:100},
+  {ar:'يَا رَبَّ الْعَالَمِين',fa:'ای پروردگار جهانیان',n:100}
+];
+const LS='qaza-pesteh-v1';
+const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const dk=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const pk=k=>{const a=k.split('-').map(Number);return new Date(a[0],a[1]-1,a[2],12)};
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);x.setHours(12,0,0,0);return x};
+const jal=(d,o)=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',o).format(d);
+const CHR='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>';
+const CHL='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
+const jparts=d=>{const o={};new Intl.DateTimeFormat('en-US-u-ca-persian',{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d).forEach(p=>{if(p.type!=='literal')o[p.type]=parseInt(p.value,10)});return{y:o.year,m:o.month,d:o.day}};
+const jdate=(d,y)=>{const p=jparts(d);return WD[d.getDay()]+' '+fa(p.d)+' '+jal(d,{month:'long'})+(y?' '+fa(p.y):'')};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const zero=()=>Object.fromEntries(PR.map(p=>[p.id,0]));
+const hap=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+
+function defaults(){return{v:2,bulk:zero(),items:[],done:0,days:{},dhikr:{},times:Object.fromEntries(PR.map(p=>[p.id,p.t])),remind:true,chat:[]}}
+let S=defaults();
+try{const raw=localStorage.getItem(LS);if(raw){const o=JSON.parse(raw);S=Object.assign(defaults(),o);S.bulk=Object.assign(zero(),o.bulk||{});S.times=Object.assign(defaults().times,o.times||{});S.dhikr=o.dhikr||{}}}catch(e){}
+let saveT=0;
+function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
+function saveSoon(){clearTimeout(saveT);saveT=setTimeout(save,350)}
+
+let tab='today', viewKey=dk(new Date()), popId=null;
+let calStart=monthStartOf(new Date()), calSel=dk(new Date());
+const todayKey=()=>dk(new Date());
+const bulkTotal=()=>PR.reduce((a,p)=>a+(+S.bulk[p.id]||0),0);
+const pending=()=>S.items.length+bulkTotal();
+const remainOf=id=>(+S.bulk[id]||0)+S.items.filter(i=>i.p===id).length;
+
+/* ================= UI helpers ================= */
+const $=s=>document.querySelector(s);
+const layer=$('#layer');
+function toast(msg,ms=2600){
+  document.querySelectorAll('.toast').forEach(x=>x.remove());
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);
+  setTimeout(()=>{t.style.transition='.3s';t.style.opacity='0';setTimeout(()=>t.remove(),300)},ms);
+}
+function closeScrim(sc){sc.classList.add('out');setTimeout(()=>sc.remove(),200)}
+function dialog({icon='⚠️',title,text,buttons}){
+  const sc=document.createElement('div');sc.className='scrim center';
+  sc.innerHTML=`<div class="dlg" role="alertdialog"><h3><span>${icon}</span>${esc(title)}</h3><p>${text}</p><div class="btns"></div></div>`;
+  const box=sc.querySelector('.btns');
+  buttons.forEach(b=>{const el=document.createElement('button');el.className=b.cls||'b-sec';el.textContent=b.label;el.onclick=()=>{closeScrim(sc);b.fn&&b.fn()};box.appendChild(el)});
+  layer.appendChild(sc);
+}
+
+/* ================= Calendar math ================= */
+function monthStartOf(date){const p=jparts(date);return addDays(date,-(p.d-1))}
+function monthLen(start){let n=29;while(n<32&&jparts(addDays(start,n)).d!==1)n++;return n}
+function dayInfo(key){
+  const st=PR.map(p=>(S.days[key]||{})[p.id]||null);
+  return{st,read:st.filter(x=>x==='read').length,miss:st.filter(x=>x==='missed').length};
+}
+function streak(){
+  let n=0,d=new Date();d.setHours(12);
+  if(dayInfo(dk(d)).read<5)d=addDays(d,-1);
+  while(dayInfo(dk(d)).read===5){n++;d=addDays(d,-1)}
+  return n;
+}
+
+/* ================= Logic ================= */
+function dayStatus(key,id){return (S.days[key]||{})[id]||null}
+function setStatus(key,id,st){
+  const cur=dayStatus(key,id);
+  S.days[key]=S.days[key]||{};
+  if(cur===st){
+    delete S.days[key][id];
+    if(st==='missed')S.items=S.items.filter(i=>!(i.d===key&&i.p===id&&i.src==='day'));
+  }else{
+    if(cur==='missed')S.items=S.items.filter(i=>!(i.d===key&&i.p===id&&i.src==='day'));
+    S.days[key][id]=st;
+    if(st==='missed')S.items.push({id:uid(),p:id,d:key,src:'day',ts:Date.now()});
+  }
+  if(!Object.keys(S.days[key]).length)delete S.days[key];
+  save();popId=id;render();
+  const now=dayStatus(key,id);
+  if(now==='missed'){
+    hap([30,40,30]);
+    dialog({icon:'⚠️',title:'ثبت شد توی لیست قضا',
+      text:`نماز <b>${PM[id].n}</b> رو نخوندی و رفت تو لیست قضاها. سعی کن <b>زودتر</b> بخونیش و عقب نندازی. هر وقت خوندی، تو تب «قضاها» تیکش رو بزن.`,
+      buttons:[{label:'بعداً',cls:'b-sec'},{label:'الان می‌خونمش',cls:'b-warn',fn:()=>go('qaza')}]});
+  }else if(now==='read'){
+    hap(18);
+    toast(dayInfo(key).read===5?'ماشاءالله! هر پنج نماز امروز خونده شد 🌿':'قبول باشه 🤲');
+  }
+}
+function readItem(itemId){
+  S.items=S.items.filter(i=>i.id!==itemId);S.done++;save();render();hap(18);
+  toast(pending()?'قبول باشه 🤲 یکی کم شد':'ماشاءالله! همه‌ی قضاهات تموم شد 🌿');
+}
+function readBulk(id){if(S.bulk[id]>0){S.bulk[id]--;S.done++;save();render();hap(18);toast('قبول باشه 🤲')}}
+function adjBulk(id,d){S.bulk[id]=Math.max(0,(+S.bulk[id]||0)+d);save();render();hap(8)}
+function ageDays(ts){return Math.floor((Date.now()-ts)/86400000)}
+
+/* ================= Render ================= */
+function go(t){tab=t;render(true);window.scrollTo({top:0,behavior:'smooth'})}
+const NAVI=[
+ ['today','امروز','<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.500M12 19v2.500M2.500 12H5M19 12h2.500M5.300 5.300l1.800 1.800M16.900 16.900l1.800 1.800M18.700 5.300l-1.800 1.800M7.100 16.900l-1.800 1.800"/></svg>'],
+ ['cal','تقویم','<svg viewBox="0 0 24 24"><rect x="3.500" y="5" width="17" height="15.500" rx="3.500"/><path d="M8 3v4M16 3v4M3.500 10h17"/><circle cx="8.500" cy="14" r=".8"/><circle cx="12" cy="14" r=".8"/><circle cx="15.500" cy="14" r=".8"/><circle cx="8.500" cy="17.200" r=".8"/><circle cx="12" cy="17.200" r=".8"/></svg>'],
+ ['qaza','قضاها','<svg viewBox="0 0 24 24"><path d="M12 3c3 2.500 5 5.500 5 9a5 5 0 0 1-10 0c0-3.500 2-6.500 5-9z"/><path d="M5 21h14M9 17.500h6"/></svg>'],
+ ['ahkam','احکام','<svg viewBox="0 0 24 24"><path d="M12 6.500C10 5 7 4.500 4 5v13c3-.5 6 0 8 1.500 2-1.500 5-2 8-1.500V5c-3-.5-6 0-8 1.500zM12 6.500v13"/></svg>'],
+ ['set','تنظیمات','<svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2.200"/><circle cx="8" cy="17" r="2.200"/></svg>']
+];
+function renderNav(){
+  const n=pending();
+  $('#nav').innerHTML=NAVI.map(([id,l,ic])=>`<button data-go="${id}" class="${tab===id?'on':''}">${ic}<span>${l}</span>${id==='qaza'&&n?`<i class="badge">${fa(n>99?'99+':n)}</i>`:''}</button>`).join('');
+  const mb=$('#mbadge');mb.textContent=n?`${fa(n)} قضا`:'';mb.classList.toggle('on',!!n);
+}
+function render(tabChanged){
+  $('#hdate').textContent=jdate(new Date(),true);
+  renderNav();
+  const v=$('#view');
+  if(tabChanged){v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter')}
+  if(tab==='today')v.innerHTML=vToday();
+  else if(tab==='cal')v.innerHTML=vCal();
+  else if(tab==='qaza')v.innerHTML=vQaza();
+  else if(tab==='set')v.innerHTML=vSet();
+  else if(tab==='ahkam'){ if(tabChanged||!$('#chatlog'))buildAhkam() }
+  popId=null;
+}
+function warnBanner(){
+  const n=pending();
+  if(!n)return `<div class="alert good"><span class="ic">🌿</span><div>الحمدلله، الان هیچ نماز قضایی نداری.</div></div>`;
+  const old=S.items.filter(i=>ageDays(i.ts)>=1).length;
+  return `<div class="alert warn"><span class="ic">⚠️</span><div>تو <b>${fa(n)}</b> نماز قضا داری که هنوز نخوندی${old?` (<b>${fa(old)}</b> تاشون از روزای قبله)`:''}. عقبشون نندازی!</div>${tab!=='qaza'?'<button data-go="qaza">ببین</button>':''}</div>`;
+}
+function dhikrCard(key){
+  const d=pk(key),w=d.getDay(),dh=DHIKR[w],c=S.dhikr[key]||0,C=2*Math.PI*58;
+  return `<div class="card dhikr"><div class="dh-head"><b>ذکر روز ${WD[w]}</b><span>معمولاً ${fa(dh.n)} بار</span></div>
+  <div class="dh-ar">${dh.ar}</div><div class="dh-fa">${dh.fa}</div>
+  <div class="dh-row"><button class="tasbih" id="tasbih" data-tasbih aria-label="شمارنده‌ی ذکر">
+    <svg viewBox="0 0 124 124"><circle cx="62" cy="62" r="58" fill="none" stroke="#E7F0C8" stroke-width="6"/><circle id="dring" cx="62" cy="62" r="58" fill="none" stroke="#7FA84A" stroke-width="6" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-Math.min(1,c/dh.n))}" style="transition:stroke-dashoffset .25s"/></svg>
+    <div class="in"><b class="num" id="dcount">${fa(c)}</b><span>بزن</span></div></button>
+    <button class="mini" data-dreset aria-label="صفر کردن">↺</button></div></div>`;
+}
+function vToday(){
+  const tk=todayKey(), isToday=viewKey===tk, d=pk(viewKey);
+  const info=dayInfo(viewKey), st=info.st, readN=info.read, missN=info.miss;
+  const now=new Date(), nm=now.getHours()*60+now.getMinutes();
+  const yk=dk(addDays(new Date(),-1));
+  const yUn=isToday?PR.filter(p=>!dayStatus(yk,p.id)).length:0;
+  const yShow=isToday&&yUn>0&&yUn<5&&S.days[yk];
+  const sk=streak();
+  const cards=PR.map((p,i)=>{
+    const s=st[i];
+    let late=false;
+    if(isToday&&!s){const [h,m]=S.times[p.id].split(':').map(Number);late=nm>h*60+m+45}
+    const cls=s==='read'?'read':s==='missed'?'missed':late?'late':'';
+    const tag=s==='read'?'<span class="tag t-read">✓ خوانده شد</span>':s==='missed'?'<span class="tag t-missed">قضا شد</span>':late?'<span class="tag t-late">وقتش گذشته!</span>':'<span class="tag t-wait">در انتظار</span>';
+    return `<div class="prayer ${cls} ${popId===p.id?'pop':''}">
+      <div class="ptop"><div class="picon">${ICONS[p.id]}</div>
+      <div><div class="pname">نماز ${p.n}<small>${p.ar}</small></div><div class="pmeta">${fa(p.r)} رکعت · حدود ساعت <span class="num">${fa(S.times[p.id])}</span></div></div>${tag}</div>
+      <div class="pbtns">
+        <button class="btn-read" data-st="read" data-p="${p.id}">✓ خوانده شد</button>
+        <button class="btn-miss" data-st="missed" data-p="${p.id}">✕ قضا شد</button>
+      </div></div>`;
+  }).join('');
+  return `
+  ${warnBanner()}
+  <div class="daynav">
+    <button class="circ" data-day="-1" aria-label="روز قبل">${CHR}</button>
+    <div class="mid"><b>${jdate(d)}</b><span>${isToday?'<span class="todaychip">امروز</span>':`<a href="#" data-today style="color:var(--p600);font-weight:700;text-decoration:none">برگرد به امروز</a>`}</span></div>
+    <button class="circ" data-day="1" aria-label="روز بعد" ${isToday?'disabled':''}>${CHL}</button>
+  </div>
+  ${yShow?`<div class="alert amber"><span class="ic">🕓</span><div>دیروز <b>${fa(yUn)}</b> نماز رو علامت نزدی. ببین خوندی یا قضا شد.</div><button data-day="-1">دیروز</button></div>`:''}
+  <div class="card" style="margin-top:12px"><div style="display:flex;justify-content:space-between;font-size:13.5px"><span>خوانده: <b>${fa(readN)}</b></span><span>قضا: <b style="color:var(--rose-d)">${fa(missN)}</b></span><span>مانده: <b>${fa(5-readN-missN)}</b></span></div>
+  <div class="progress"><i style="width:${(readN+missN)*20}%"></i></div>
+  ${sk?`<div style="margin-top:8px;font-size:12.5px" class="streak">🔥 ${fa(sk)} روز پشت‌سرهم هر پنج نماز رو خوندی</div>`:''}</div>
+  ${dhikrCard(viewKey)}
+  ${cards}
+  <div class="footer"><div class="ali">یا علی مدد</div>نمازت رو اول وقت بخون، قضا نذار 🌿</div>`;
+}
+function vCal(){
+  const len=monthLen(calStart), jp=jparts(calStart), tk=todayKey();
+  const first=(calStart.getDay()+1)%7;
+  const head=WSHORT.map((w,i)=>`<div class="${i===6?'fri':''}">${w}</div>`).join('');
+  let cells='';
+  for(let i=0;i<first;i++)cells+='<div class="cd empty"></div>';
+  let tr=0,tm=0,full=0;
+  for(let n=0;n<len;n++){
+    const d=addDays(calStart,n),key=dk(d),inf=dayInfo(key),jd=n+1;
+    const fut=key>tk;
+    if(!fut){tr+=inf.read;tm+=inf.miss;if(inf.read===5)full++}
+    const cls=[(d.getDay()===5)?'fri':'',fut?'future':'',inf.read===5?'full':inf.miss?'miss':inf.read?'part':'',key===tk?'today':'',key===calSel?'sel':''].join(' ');
+    const dots=inf.st.map(s=>`<i class="${s==='read'?'r':s==='missed'?'m':''}"></i>`).join('');
+    cells+=`<button class="cd ${cls}" data-cd="${key}"><span>${fa(jd)}</span><span class="dots">${dots}</span></button>`;
+  }
+  const sd=pk(calSel),si=dayInfo(calSel),isFut=calSel>tk,w=sd.getDay();
+  const gdate=new Intl.DateTimeFormat('fa-IR',{day:'numeric',month:'long',year:'numeric',calendar:'gregory'}).format(sd);
+  const rows=PR.map((p,i)=>{const s=si.st[i];return `<div class="dayrow"><span>نماز ${p.n}</span>${s==='read'?'<span class="tag t-read">✓ خوانده شد</span>':s==='missed'?'<span class="tag t-missed">قضا شد</span>':'<span class="tag t-wait">'+(isFut?'—':'علامت نخورده')+'</span>'}</div>`}).join('');
+  return `
+  <div class="calhead">
+    <button class="circ" data-cal="-1" aria-label="ماه قبل">${CHR}</button>
+    <div class="mid"><b>${jal(calStart,{month:'long'})} ${fa(jp.y)}</b><span>${new Intl.DateTimeFormat('fa-IR',{month:'long',year:'numeric',calendar:'gregory'}).format(addDays(calStart,14))}</span></div>
+    <button class="circ" data-cal="1" aria-label="ماه بعد">${CHL}</button>
+  </div>
+  <div class="card cal"><div class="cal-w">${head}</div><div class="cal-g">${cells}</div>
+    <div class="legend"><span><i style="background:var(--p500)"></i>خوانده</span><span><i style="background:var(--rose)"></i>قضا</span><span><i style="background:#D9DFC8"></i>علامت نخورده</span></div></div>
+  <div class="stats3"><div class="stat"><b class="num">${fa(tr)}</b><span>نماز خوانده</span></div><div class="stat r"><b class="num">${fa(tm)}</b><span>قضا شده</span></div><div class="stat"><b class="num">${fa(full)}</b><span>روز کامل</span></div></div>
+  <div class="card"><h2>${jdate(sd)}</h2><div class="muted" style="margin:-4px 0 6px">${gdate}</div>${rows}
+    <div class="muted" style="margin-top:8px">ذکر این روز: <b style="color:var(--p800)">${DHIKR[w].ar}</b></div>
+    ${isFut?'':`<button class="btn-main" data-open="${calSel}">ثبت یا ویرایش نمازهای این روز</button>`}</div>
+  ${calStart.getTime()!==monthStartOf(new Date()).getTime()?'<button class="btn-ghost" data-calnow>برگرد به ماه جاری</button>':''}`;
+}
+function vQaza(){
+  const n=pending(), tot=n+S.done, pct=tot?S.done/tot:0, C=2*Math.PI*50;
+  const items=[...S.items].sort((a,b)=>a.ts-b.ts).map(i=>{
+    const a=ageDays(i.ts);
+    return `<div class="qrow"><div class="qn">${PM[i.p].n}<small>${jdate(pk(i.d))}${a>=1?`<span class="old">${fa(a)} روز پیش</span>`:''}</small></div><button class="done-btn" data-ri="${i.id}">خوندمش ✓</button></div>`}).join('');
+  const bulk=PR.map(p=>`<div class="qrow"><div class="qn">${p.n}<small>${fa(p.r)} رکعتی</small></div>
+    <button class="mini" data-adj="-1" data-p="${p.id}">−</button><div class="cnt num">${fa(S.bulk[p.id])}</div><button class="mini" data-adj="1" data-p="${p.id}">+</button>
+    <button class="done-btn" data-rb="${p.id}" ${S.bulk[p.id]>0?'':'disabled'}>خوندم ✓</button></div>`).join('');
+  return `
+  ${warnBanner()}
+  <div class="card ringcard">
+    <div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="#E7F0C8" stroke-width="12"/><circle class="pg" cx="60" cy="60" r="50" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct)}"/><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9DC45F"/><stop offset="1" stop-color="#476B2B"/></linearGradient></defs></svg>
+    <div class="c"><b class="num">${fa(n)}</b><span>قضای مانده</span></div></div>
+    <div class="ringinfo">
+      <div class="row"><span>خوانده‌شده</span><b class="num">${fa(S.done)}</b></div>
+      <div class="row"><span>پیشرفت</span><b class="num">${fa(Math.round(pct*100))}٪</b></div>
+      <div class="row"><span>از لیست روزانه</span><b class="num">${fa(S.items.length)}</b></div>
+      <div class="row"><span>قضاهای قدیمی</span><b class="num">${fa(bulkTotal())}</b></div>
+    </div>
+  </div>
+  <button class="btn-main" data-calc>🧮 محاسبه‌ی قضاهای گذشته</button>
+  <div class="sec-title">قضاهای ثبت‌شده از لیست روزانه</div>
+  <div class="card" style="margin-top:8px">${items||'<div class="muted" style="text-align:center;padding:8px">چیزی نیست. هر وقت تو تب «امروز» «قضا شد» رو بزنی، همین‌جا میاد.</div>'}</div>
+  <div class="sec-title">قضاهای قدیمی (شمارشی)</div>
+  <div class="card" style="margin-top:8px">${bulk}<div class="muted" style="margin-top:8px">هر بار که یه نماز قضا خوندی «خوندم» رو بزن تا یکی کم شه.</div></div>`;
+}
+let deferredPrompt=null;
+function installCard(){
+  if(PWA){
+    return `<div class="card"><h2>📲 نصب روی گوشی</h2>
+    <div class="muted">اپ رو روی صفحه‌ی اصلی گوشیت نصب کن تا مثل یه اپ واقعی و بدون نوار مرورگر باز شه و بدون اینترنت هم کار کنه.</div>
+    ${deferredPrompt?'<button class="btn-main" data-install>نصب اپ</button>':'<ol class="steps"><li>منوی سه‌نقطه‌ی کروم (⋮) رو بزن</li><li>«Install app» یا «افزودن به صفحه اصلی» رو انتخاب کن</li><li>تأیید کن؛ آیکون ذوالفقار میاد رو صفحه‌ی اصلی</li></ol>'}</div>`;
+  }
+  return `<div class="card"><h2>📲 افزودن به صفحه اصلی</h2>
+    <div class="muted">تو کروم اندروید: منوی سه‌نقطه (⋮) ← «Add to Home screen». این یه میان‌بر به همین صفحه‌ست. برای نصب واقعی (بدون نوار مرورگر و آفلاین) نسخه‌ی نصب‌شدنی اپ رو باید روی یه هاست بذاری.</div></div>`;
+}
+function vSet(){
+  const times=PR.map(p=>`<div class="field"><label>${p.n}</label><input type="time" data-time="${p.id}" value="${S.times[p.id]}"></div>`).join('');
+  return `
+  <div class="card"><h2>⏰ ساعت نمازها</h2><div class="muted" style="margin-bottom:6px">ساعت تقریبی نمازهای خودت رو بذار. ۴۵ دقیقه بعدش اگه علامت نزده باشی بهت هشدار می‌ده.</div>${times}</div>
+  <div class="card"><h2>🔔 یادآوری</h2>
+    <div class="field"><label>هشدار هر ۳۰ دقیقه وقتی قضا مونده<br><span class="muted">(تا وقتی اپ بازه)</span></label><button class="switch ${S.remind?'on':''}" data-remind aria-label="یادآوری"></button></div></div>
+  ${installCard()}
+  <div class="card"><h2>💾 پشتیبان‌گیری</h2>
+    <div class="muted">اطلاعات روی همین دستگاه ذخیره میشه. برای اطمینان (یا انتقال به نسخه‌ی نصب‌شده) یه نسخه پشتیبان کپی کن و جایی نگه دار.</div>
+    <button class="btn-ghost" data-export>کپی کردن پشتیبان</button>
+    <textarea class="box" id="imp" placeholder="متن پشتیبان رو اینجا بچسبون…"></textarea>
+    <button class="btn-ghost" data-import>بازیابی از پشتیبان</button>
+    <button class="btn-ghost btn-danger" data-reset>پاک کردن همه‌چیز</button></div>
+  <div class="footer"><div class="ali">یا علی</div>این اپ جای رساله‌ی مرجع تقلیدت رو نمی‌گیره.</div>`;
+}
+
+/* ================= Calculator sheet ================= */
+function openCalc(){
+  const sc=document.createElement('div');sc.className='scrim';
+  sc.innerHTML=`<div class="sheet"><h3>🧮 محاسبه‌ی قضاهای گذشته</h3>
+  <div class="muted">یا مدت نخوندنت رو بنویس، یا از سنت حسابش کن.</div>
+  <div class="card" style="margin-top:10px"><h2>کمک‌گر سن (تقریبی)</h2>
+    <div class="field"><label>جنسیت</label><select id="cg"><option value="b">پسر (۱۵ سال قمری)</option><option value="g">دختر (۹ سال قمری)</option></select></div>
+    <div class="field"><label>سن الان (سال)</label><input type="number" id="cage" min="0" max="120" inputmode="numeric"></div>
+    <button class="btn-ghost" id="cfill">حساب کن از روی سن</button></div>
+  <div class="card"><h2>مدت قضا شده</h2>
+    <div class="field"><label>سال</label><input type="number" id="cy" min="0" value="0" inputmode="numeric"></div>
+    <div class="field"><label>ماه</label><input type="number" id="cm" min="0" value="0" inputmode="numeric"></div>
+    <div class="field"><label>روز</label><input type="number" id="cd" min="0" value="0" inputmode="numeric"></div>
+    <div class="field"><label>روزهای عادت در ماه<br><span class="muted">(خانم‌ها؛ قضا ندارن)</span></label><input type="number" id="ch" min="0" max="15" value="0" inputmode="numeric"></div>
+    <div style="margin-top:8px;font-weight:600;font-size:14px">کدوم نمازها قضا شده؟</div>
+    <div class="grid5">${PR.map(p=>`<label class="cb"><input type="checkbox" data-cp="${p.id}" checked>${p.n}</label>`).join('')}</div></div>
+  <div class="preview" id="cprev"></div>
+  <div class="dlg" style="box-shadow:none;border:0;background:transparent;padding:0;animation:none"><div class="btns">
+    <button class="b-sec" id="ccancel">لغو</button><button class="b-pri" id="cadd">اضافه به قضاها</button></div></div></div>`;
+  layer.appendChild(sc);
+  const g=id=>sc.querySelector('#'+id);
+  const calc=()=>{
+    const y=+g('cy').value||0,m=+g('cm').value||0,d=+g('cd').value||0,h=+g('ch').value||0;
+    const total=Math.round(y*365.2422+m*30.4375+d);
+    const months=y*12+m+d/30.4375;
+    const haiz=Math.round(months*h);
+    const days=Math.max(0,total-haiz);
+    const sel=[...sc.querySelectorAll('[data-cp]')].filter(c=>c.checked).map(c=>c.dataset.cp);
+    return{total,haiz,days,sel,sum:days*sel.length};
+  };
+  const upd=()=>{const r=calc();g('cprev').innerHTML=`<b>${fa(r.days)}</b> روز${r.haiz?` (بعد از کم کردن ${fa(r.haiz)} روز عادت)`:''}<br>مجموع: <b>${fa(r.sum)}</b> نماز قضا<br><span class="muted">${r.sel.map(i=>PM[i].n+' '+fa(r.days)).join(' · ')}</span>`};
+  sc.addEventListener('input',upd);upd();
+  g('cfill').onclick=()=>{
+    const age=+g('cage').value;if(!age){toast('سنت رو بنویس');return}
+    const start=g('cg').value==='g'?9*354.367/365.2422:15*354.367/365.2422;
+    const left=age-start;if(left<=0){toast('هنوز به سن تکلیف نرسیدی 🙂');return}
+    g('cy').value=Math.floor(left);g('cm').value=Math.round((left-Math.floor(left))*12);g('cd').value=0;upd();
+  };
+  g('ccancel').onclick=()=>closeScrim(sc);
+  sc.addEventListener('click',e=>{if(e.target===sc)closeScrim(sc)});
+  g('cadd').onclick=()=>{
+    const r=calc();if(!r.sum){toast('عددی برای اضافه کردن نیست');return}
+    r.sel.forEach(i=>S.bulk[i]=(+S.bulk[i]||0)+r.days);save();closeScrim(sc);render();
+    toast(`${fa(r.sum)} نماز قضا اضافه شد`);
+  };
+}
+
+/* ================= Ahkam (chat) ================= */
+const FAQ=[
+ ['قضا چه نمازهایی داره؟','نمازهای یومیه‌ای که وقتشون گذشته و نخوندی (یا بعداً معلوم شه باطل بوده) باید قضا بشن.'],
+ ['قضا فوریت داره؟','طبق نظر مشهور مراجع فوریت نداره، ولی نباید سهل‌انگاری کرد و بی‌دلیل عقبش انداخت. بهتره زودتر بخونی.'],
+ ['قضا کامل خونده میشه یا شکسته؟','همون‌جوری که فوت شده: نمازی که در حضر فوت شده کامل (۴ رکعتی) قضا میشه، حتی اگه الان مسافری. نمازی که در سفر (با شرایط قصر) فوت شده، شکسته قضا میشه حتی تو وطن.'],
+ ['خانم‌ها در ایام عادت','نماز در ایام حیض و نفاس واجب نیست و قضا هم نداره (روزه قضا داره).'],
+ ['سن تکلیف','دختر با تمام شدن ۹ سال قمری و پسر با بلوغ (علائم شرعی؛ و حداکثر ۱۵ سال قمری) مکلف میشه.'],
+ ['تعداد قضا رو دقیق نمی‌دونم','اگه شک بین کمتر و بیشتر داری، به عدد کمتر (قدر یقینی) هم اکتفا کردن کافیه، ولی احتیاطاً می‌تونی بیشتر بخونی. جزئیاتش رو از بخش پرسش بپرس.'],
+ ['ترتیب نمازهای قضا','نماز ظهر و عصر یه روز، و مغرب و عشای یه روز باید به ترتیب خونده شن. در بقیه موارد نظر مراجع فرق می‌کنه؛ از مرجع خودت یا بخش پرسش کمک بگیر.']
+];
+const CHIPS=['قضای نماز مسافر چطوره؟','نیت نماز قضا رو چطور کنم؟','نماز آیات کی واجب میشه؟','اگه وسط نماز شک کنم چیکار کنم؟'];
+const SYS=`تو «دستیار احکام شیعه» داخل یک اپ قضای نماز هستی. فقط بر اساس فقه شیعه‌ی دوازده‌امامی و فتاوای مراجع معروف (مثل امام خمینی، آیت‌الله خامنه‌ای، آیت‌الله سیستانی، آیت‌الله مکارم شیرازی و…) جواب بده. فارسی ساده و صمیمی ولی محترمانه. کوتاه و کاربردی (حداکثر چند پاراگراف کوتاه، چون روی موبایل خونده میشه). اگه مراجع اختلاف نظر دارن، صریح بگو و نظرها رو خیلی خلاصه بیار؛ اگه مطمئن نیستی، بگو مطمئن نیستی و کاربر رو به رساله یا دفتر استفتائات مرجع خودش ارجاع بده. چیزی از خودت درنیار و فتوا جعل نکن. در مسائل مهم یا اختلافی یه جمله یادآوری کن که حکم نهایی با مرجع تقلید خودشه. اگه سوال به احکام ربطی نداشت مودبانه برگردون به احکام و قضای نماز.`;
+let busy=false;
+function buildAhkam(){
+  $('#view').innerHTML=`
+  <div class="card"><h2>🕌 بپرس از احکام</h2><div class="muted">هر سوالی درباره‌ی نماز، قضا، روزه، طهارت و… داری بپرس. جواب‌ها بر مبنای فقه شیعه‌ست.</div>
+  <div class="chips" id="chips">${CHIPS.map(c=>`<button class="chip" data-chip="${esc(c)}">${esc(c)}</button>`).join('')}</div></div>
+  <div class="chat" id="chatlog"></div>
+  <div class="askbar"><textarea id="q" rows="1" placeholder="سوالت رو بنویس…"></textarea><button class="send" id="send" aria-label="ارسال"><svg viewBox="0 0 24 24"><path d="M3 11.500L21 4l-7.500 17-2.500-7z"/></svg></button></div>
+  <div class="disc">پاسخ‌ها راهنمای کلی‌ان و فتوای رسمی نیستن؛ حکم نهایی با مرجع تقلید توئه.</div>
+  ${S.chat.length?'<button class="btn-ghost" data-clearchat>پاک کردن گفتگو</button>':''}
+  <div class="sec-title">احکام پرتکرار قضا</div>
+  ${FAQ.map(f=>`<details class="faq"><summary>${f[0]}</summary><div class="ans">${f[1]}</div></details>`).join('')}`;
+  const log=$('#chatlog');
+  S.chat.forEach(m=>log.appendChild(bubble(m.role,m.content)));
+}
+function md(s){
+  const lines=esc(s).split('\n');let out='',inl=false;
+  const inline=t=>t.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+  lines.forEach(l=>{
+    const t=l.trim();
+    if(/^([-•*]|\d+[.)])\s+/.test(t)){if(!inl){out+='<ul>';inl=true}out+='<li>'+inline(t.replace(/^([-•*]|\d+[.)])\s+/,''))+'</li>'}
+    else{if(inl){out+='</ul>';inl=false}if(t)out+='<p>'+inline(t)+'</p>'}
+  });
+  if(inl)out+='</ul>';return out;
+}
+function bubble(role,text){
+  const b=document.createElement('div');b.className='bub '+(role==='user'?'u':'a');
+  if(role==='user')b.textContent=text;else b.innerHTML=md(text);return b;
+}
+async function ask(q){
+  q=q.trim();if(!q||busy)return;
+  const log=$('#chatlog');if(!log)return;
+  const sample=(window.claude&&window.claude.use)?await window.claude.use('sample').catch(()=>null):null;
+  log.appendChild(bubble('user',q));
+  const ab=document.createElement('div');ab.className='bub a thinking';ab.textContent='دارم فکر می‌کنم…';log.appendChild(ab);
+  ab.scrollIntoView({behavior:'smooth',block:'center'});
+  if(!sample){ab.className='bub a';ab.textContent='پرسش‌وپاسخ هوشمند فقط توی نسخه‌ی داخل Claude کار می‌کنه و اینجا در دسترس نیست. فعلاً از احکام پرتکرار پایین صفحه استفاده کن.';return}
+  busy=true;$('#send').disabled=true;
+  const ctx=`وضعیت قضاهای کاربر: ${PR.map(p=>p.n+' '+remainOf(p.id)).join('، ')}.`;
+  const hist=S.chat.slice(-8).map(m=>({role:m.role,content:m.content}));
+  const msgs=[...hist,{role:'user',content:`${SYS}\n\n${ctx}\n\nسوال کاربر: ${q}`}];
+  try{
+    const r=await sample(msgs,{cache:false,modelTier:'default',onText:({text})=>{ab.className='bub a';ab.innerHTML=md(text)}});
+    const ans=(r&&r.text)||'';ab.className='bub a';ab.innerHTML=md(ans||'جوابی نگرفتم، دوباره امتحان کن.');
+    S.chat.push({role:'user',content:q},{role:'assistant',content:ans});S.chat=S.chat.slice(-30);save();
+  }catch(e){
+    ab.className='bub a';
+    ab.textContent=e&&e.code==='not_granted'?'برای پاسخ دادن به اجازه‌ی تو نیاز دارم. دوباره بپرس و تأیید کن.':e&&e.code==='rate_limited'?'الان درخواست‌ها زیاده، چند لحظه بعد دوباره امتحان کن.':'یه مشکلی پیش اومد، دوباره امتحان کن.';
+  }
+  busy=false;const sb=$('#send');if(sb)sb.disabled=false;
+}
+
+/* ================= Events ================= */
+function tasbihTap(){
+  const dh=DHIKR[pk(viewKey).getDay()];
+  const c=(S.dhikr[viewKey]||0)+1;S.dhikr[viewKey]=c;saveSoon();
+  const el=$('#dcount');if(el)el.textContent=fa(c);
+  const r=$('#dring');if(r){const C=2*Math.PI*58;r.style.strokeDashoffset=C*(1-Math.min(1,c/dh.n))}
+  const b=$('#tasbih');if(b){b.classList.remove('tick');void b.offsetWidth;b.classList.add('tick')}
+  if(c===dh.n){hap([40,50,40]);toast('ماشاءالله، ذکر امروز کامل شد 🌿')}else hap(8);
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-go],[data-st],[data-day],[data-today],[data-ri],[data-rb],[data-adj],[data-calc],[data-remind],[data-export],[data-import],[data-reset],[data-chip],[data-clearchat],[data-tasbih],[data-dreset],[data-cal],[data-calnow],[data-cd],[data-open],[data-install],#send');
+  if(!t)return;
+  if(t.dataset.go){hap(6);return go(t.dataset.go)}
+  if(t.dataset.st)return setStatus(viewKey,t.dataset.p,t.dataset.st);
+  if(t.dataset.day){const d=pk(viewKey);d.setDate(d.getDate()-(+t.dataset.day));const k=dk(d);if(k>todayKey())return;viewKey=k;return render()}
+  if(t.hasAttribute('data-today')){e.preventDefault();viewKey=todayKey();return render()}
+  if(t.hasAttribute('data-tasbih'))return tasbihTap();
+  if(t.hasAttribute('data-dreset'))return dialog({icon:'↺',title:'صفر کنم؟',text:'شمارنده‌ی ذکر این روز صفر میشه.',buttons:[{label:'نه',cls:'b-sec'},{label:'آره',cls:'b-pri',fn:()=>{delete S.dhikr[viewKey];save();render()}}]});
+  if(t.dataset.cal){calStart=monthStartOf(addDays(calStart,+t.dataset.cal>0?32:-1));hap(6);return render()}
+  if(t.hasAttribute('data-calnow')){calStart=monthStartOf(new Date());calSel=todayKey();return render()}
+  if(t.dataset.cd){calSel=t.dataset.cd;hap(6);return render()}
+  if(t.dataset.open){viewKey=t.dataset.open;return go('today')}
+  if(t.dataset.ri)return readItem(t.dataset.ri);
+  if(t.dataset.rb)return readBulk(t.dataset.rb);
+  if(t.dataset.adj)return adjBulk(t.dataset.p,+t.dataset.adj);
+  if(t.hasAttribute('data-calc'))return openCalc();
+  if(t.hasAttribute('data-remind')){S.remind=!S.remind;save();return render()}
+  if(t.hasAttribute('data-install')){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.finally(()=>{deferredPrompt=null;render()})}return}
+  if(t.hasAttribute('data-export')){
+    const txt=JSON.stringify(S);
+    (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast('پشتیبان کپی شد ✓')).catch(()=>{const ta=$('#imp');ta.value=txt;ta.select();toast('متن پشتیبان توی کادر پایین اومد؛ خودت کپیش کن')});return}
+  if(t.hasAttribute('data-import')){
+    try{const o=JSON.parse($('#imp').value.trim());if(!o||typeof o!=='object'||!o.bulk)throw 0;S=Object.assign(defaults(),o);S.dhikr=o.dhikr||{};save();render();toast('بازیابی شد ✓')}catch(x){toast('متن پشتیبان معتبر نیست')}return}
+  if(t.hasAttribute('data-reset'))return dialog({icon:'🗑️',title:'مطمئنی؟',text:'همه‌ی اطلاعات (قضاها، تاریخچه، تنظیمات) پاک میشه و برگشتی نداره.',buttons:[{label:'نه',cls:'b-sec'},{label:'آره، پاک کن',cls:'b-warn',fn:()=>{S=defaults();save();render();toast('پاک شد')}}]});
+  if(t.dataset.chip){return ask(t.dataset.chip)}
+  if(t.hasAttribute('data-clearchat')){S.chat=[];save();return buildAhkam()}
+  if(t.id==='send'){const q=$('#q');const v=q.value;q.value='';q.style.height='auto';return ask(v)}
+});
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.time){S.times[t.dataset.time]=t.value||PM[t.dataset.time].t;save()}});
+document.addEventListener('input',e=>{if(e.target.id==='q'){e.target.style.height='auto';e.target.style.height=Math.min(120,e.target.scrollHeight)+'px'}});
+document.addEventListener('keydown',e=>{if(e.target.id==='q'&&e.key==='Enter'&&!e.shiftKey){e.preventDefault();const v=e.target.value;e.target.value='';e.target.style.height='auto';ask(v)}});
+window.addEventListener('pagehide',save);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});
+
+/* mini bar on scroll */
+const mini=$('#minibar');let ticking=false;
+window.addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{mini.classList.toggle('show',window.scrollY>230);ticking=false})},{passive:true});
+
+/* ================= Reminders ================= */
+setInterval(()=>{if(tab==='today'&&viewKey===todayKey()&&!document.querySelector('.scrim')&&!document.activeElement.matches('input,textarea'))render()},60000);
+setInterval(()=>{if(S.remind&&pending()>0&&!document.hidden)toast(`⚠️ ${fa(pending())} نماز قضا داری. وقتشه بخونی!`,4500)},30*60*1000);
+
+/* ================= PWA ================= */
+if(PWA){
+  if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;if(tab==='set')render()});
+}
+
+render(true);
+if(pending()>0){
+  let shown=false;try{shown=sessionStorage.getItem('qz-shown')==='1';sessionStorage.setItem('qz-shown','1')}catch(e){}
+  if(!shown)setTimeout(()=>dialog({icon:'⚠️',title:'هشدار قضا',text:`هنوز <b>${fa(pending())}</b> نماز قضا داری که نخوندی. یه کم از وقتت رو بذار برای جبرانش، کم‌کم تموم میشه.`,buttons:[{label:'بعداً',cls:'b-sec'},{label:'برم ببینم',cls:'b-warn',fn:()=>go('qaza')}]}),700);
+}
+})();
+</script>
+</body>
+</html>
